@@ -1,4 +1,3 @@
-const bcrypt = require('bcrypt')
 const User = require('../Models/userModel')
 
 const createUser = async (req, res) => {
@@ -17,50 +16,7 @@ const createUser = async (req, res) => {
 		})
 	}
 }
-const updateUser = async (req, res) => {
-	if (req.user._id === req.params.id || req.user.role === 'admin') {
-		if (req.body.password) {
-			try {
-				const salt = await bcrypt.genSalt(10)
-				req.body.password = await bcrypt.hash(req.body.password, salt)
-			} catch (e) {
-				res.status(500).send({
-					status: 'failure',
-					message: e.message,
-				})
-			}
-		}
-		try {
-			const user = await User.findOneAndUpdate(
-				{ _id: req.params.id },
-				{ $set: req.body },
-				{ new: true }
-			)
 
-			if (!user) {
-				return res.status(400).send({
-					status: 'failure',
-					message: "you can't update this account.",
-				})
-			}
-			res.status(200).send({
-				status: 'success',
-				message: 'Account has been updated successfully',
-				user: req.body,
-			})
-		} catch (e) {
-			res.status(500).send({
-				status: 'failure',
-				message: 'something is wrong !',
-			})
-		}
-	} else {
-		return res.status(400).send({
-			status: 'failure',
-			message: "you can't update this account.",
-		})
-	}
-}
 const getUser = async (req, res) => {
 	try {
 		const id = req.params.id
@@ -254,7 +210,6 @@ const searchUsers = async (req, res) => {
 }
 module.exports = {
 	createUser,
-	updateUser,
 	getUser,
 	getFollowings,
 	getFollowers,
