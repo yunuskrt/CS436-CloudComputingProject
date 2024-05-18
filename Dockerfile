@@ -14,7 +14,9 @@ RUN npm install
 COPY . .
 
 # Expose the port the app runs on
+ENV PORT 8000
 EXPOSE 8000
+
 
 # Define the command to run the application
 CMD ["node", "index.js"]
