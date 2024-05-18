@@ -15,6 +15,7 @@ COPY . .
 
 # Expose the port the app runs on
 ENV PORT 8000
+ENV HOST 0.0.0.0
 EXPOSE 8000
 
 
