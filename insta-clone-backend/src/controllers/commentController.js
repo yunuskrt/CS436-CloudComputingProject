@@ -28,9 +28,15 @@ const getbyPostId = async (req, res) => {
     const article = await Article.findOne({ _id: ArticleId }).populate(
       "comment"
     );
+    const _comment = article.comment;
+    let _comments = [];
+    for(c of _comment){
+      _comments.push(c);
+    }
+    const censored_comments = await axios.post('https://comment-censorship-y7qorp3gha-uc.a.run.app/CensorComment', {"comments": _comments });
     res.status(200).send({
       status: "success",
-      comments: article.comment,
+      comments: censored_comments,
     });
   } catch (error) {
     res.status(500).send({
